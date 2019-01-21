@@ -1,0 +1,24 @@
+{
+    "name": "paylaco/payla-framework",
+    "description": "Payla light php framework",
+    "keywords": [
+        "payla",
+        "framework"
+    ],
+    "type": "project",
+    "homepage": "https://github.com/paylaco/payla-framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Saeed",
+            "email": "gholizade.saeed@yahoo.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "autoload": {
+        "psr-4": {"payla\\": ""}
+    }
+}
