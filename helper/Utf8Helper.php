@@ -4,7 +4,7 @@ namespace payla\helper;
 
 class Utf8Helper
 {
-	public static init(){
+	public static function init(){
 		if (extension_loaded('mbstring')){
 			mb_internal_encoding('UTF-8');
 			return true;
@@ -15,9 +15,11 @@ class Utf8Helper
 
 	public static function strlen($string){
 		if(self::init())
-			return return mb_strlen($string);
+			return mb_strlen($string);
 		elseif (function_exists('iconv'))
 			return iconv_strlen($string, 'UTF-8');
+		else
+			return strlen($string);
 	}
 
 	public static function utf8_strpos($string, $needle, $offset = 0) {
@@ -25,6 +27,8 @@ class Utf8Helper
 			return mb_strpos($string, $needle, $offset);
 		elseif (function_exists('iconv'))
 			return iconv_strpos($string, $needle, $offset, 'UTF-8');
+		else
+			return strpos($string, $needle, $offset);
 	}
 
 	public static function utf8_strrpos($string, $needle, $offset = 0) {
@@ -32,15 +36,19 @@ class Utf8Helper
 			return mb_strrpos($string, $needle, $offset);
 		elseif (function_exists('iconv'))
 			return iconv_strrpos($string, $needle, 'UTF-8');
+		else
+			return strrpos($string, $needle, $offset);
 	}
 
 	public static function utf8_substr($string, $offset, $length = null) {
+		$length = ($length === null) ? self::strlen($string) : $length;
+
 		if(self::init())
-			return ($length === null) ? 
-				mb_substr($string, $offset, self::strlen($string)) : mb_substr($string, $offset, $length);
+			return mb_substr($string, $offset, $length);
 		elseif (function_exists('iconv'))
-			return ($length === null) ?
-				iconv_substr($string,$offset,self::strlen($string),'UTF-8') : iconv_substr($string,$offset,$length,'UTF-8');
+			return iconv_substr($string,$offset,$length,'UTF-8');
+		else
+			return substr($string, $offset, $length);
 	}
 
 	public static function utf8_strtolower($string) {
