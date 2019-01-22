@@ -30,6 +30,11 @@ final class Loader {
 		];
 	}
 
+	public function component($component, $options = []) {
+		$options['class'] = "app\\components\\".str_replace('/', '\\', $component);
+		$this->registry->{'com_' . str_replace('/', '_', $component)} = $options;
+	}
+
 	public function view($template, $data = []) {
 		$modules = Payla::app()->config->get('modules');
 		$current_module = Payla::app()->request->module;
@@ -54,26 +59,4 @@ final class Loader {
 			exit();
 		}
 	}
-
-	// public function library($library) {
-	// 	$file = DIR_SYSTEM . 'library/' . $library . '.php';
-
-	// 	if (file_exists($file)) {
-	// 		include_once($file);
-	// 	} else {
-	// 		trigger_error('Error: Could not load library ' . $file . '!');
-	// 		exit();
-	// 	}
-	// }
-
-	// public function helper($helper) {
-	// 	$file = DIR_SYSTEM . 'helper/' . $helper . '.php';
-
-	// 	if (file_exists($file)) {
-	// 		include_once($file);
-	// 	} else {
-	// 		trigger_error('Error: Could not load helper ' . $file . '!');
-	// 		exit();
-	// 	}
-	// }
 }
