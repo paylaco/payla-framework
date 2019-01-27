@@ -12,12 +12,12 @@ class Cache {
 	public $options = [];
 
 	public function init() {
-		$class = 'payla\\library\\cache\\' . $driver;
+		$class = 'payla\\library\\cache\\' . $this->driver;
 
 		if (class_exists($class)) {
-			$this->cache = new $class($expire, $options);
+			$this->cache = new $class($this->expire, $this->options);
 		} else {
-			exit('Error: Could not load cache driver ' . $driver . ' cache!');
+			exit('Error: Could not load cache driver ' . $this->driver . ' cache!');
 		}
 	}
 
