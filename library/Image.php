@@ -1,4 +1,7 @@
 <?php
+
+namespace payla\library;
+
 class Image {
 	private $file;
 	private $image;
