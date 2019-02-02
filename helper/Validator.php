@@ -31,7 +31,7 @@ class Validator extends Component{
 						}
 					}
 
-					if (is_callable(array($this, $method))) {
+					if (is_callable([$this, $method])) {
 						$result = $this->$method($input, $param, $error_message);
 						if (is_array($result)) {
 							$this->errors[] = $result;
@@ -52,8 +52,17 @@ class Validator extends Component{
 				case 'validate_required' :
 					$default_message = sprintf($this->language->get('validate_required'), $e['field']);
 					break;
+				case 'validate_equal' :
+					$default_message = sprintf($this->language->get('validate_equal'), $e['field']);
+					break;
 				case 'validate_alpha_numeric':
 					$default_message = sprintf($this->language->get('validate_alpha_numeric'), $e['field']);
+					break;
+				case 'validate_max':
+					$default_message = sprintf($this->language->get('validate_max'), $e['field'], $e['param']);
+					break;
+				case 'validate_min':
+					$default_message = sprintf($this->language->get('validate_min'), $e['field'], $e['param']);
 					break;
 				case 'validate_max_len':
 					$default_message = sprintf($this->language->get('validate_max_len'), $e['field'], $e['param']);
@@ -88,13 +97,31 @@ class Validator extends Component{
 			return;
 		}
 
-		return array(
+		return [
 			'field' => $input['name'],
 			'value' => $input['value'],
 			'rule' => __FUNCTION__,
 			'param' => $param,
 			'error_message' => $message
-		);
+		];
+	}
+
+	protected function validate_equal($input, $param = null, $message = null)
+	{
+		if (!isset($input['value'])) {
+			return;
+		}
+
+		if ($input['value'] === $param)
+			return;
+
+		return [
+			'field' => $input['name'],
+			'value' => $input['value'],
+			'rule' => __FUNCTION__,
+			'param' => $param,
+			'error_message' => $message
+		];
 	}
 
 	protected function validate_alpha_numeric($input, $param = null, $message = null)
@@ -104,14 +131,50 @@ class Validator extends Component{
 		}
 
 		if (!preg_match('/^([A-Za-z0-9])+$/i', $input['value']) !== false) {
-			return array(
+			return [
 				'field' => $input['name'],
 				'value' => $input['value'],
 				'rule' => __FUNCTION__,
 				'param' => $param,
 				'error_message' => $message
-			);
+			];
 		}
+	}
+
+	protected function validate_max($input, $param = null, $message = null)
+	{
+		if (!isset($input['value'])) {
+			return;
+		}
+
+		if ($input['value'] <= $param)
+			return;
+
+		return [
+			'field' => $input['name'],
+			'value' => $input['value'],
+			'rule' => __FUNCTION__,
+			'param' => $param,
+			'error_message' => $message
+		];
+	}
+
+	protected function validate_min($input, $param = null, $message = null)
+	{
+		if (!isset($input['value'])) {
+			return;
+		}
+
+		if ($input['value'] >= $param)
+			return;
+
+		return [
+			'field' => $input['name'],
+			'value' => $input['value'],
+			'rule' => __FUNCTION__,
+			'param' => $param,
+			'error_message' => $message
+		];
 	}
 
 	protected function validate_max_len($input, $param = null, $message = null)
@@ -123,13 +186,13 @@ class Validator extends Component{
 		if (Utf8Helper::strlen($input['value']) <= (int)$param)
 			return;
 
-		return array(
+		return [
 			'field' => $input['name'],
 			'value' => $input['value'],
 			'rule' => __FUNCTION__,
 			'param' => $param,
 			'error_message' => $message
-		);
+		];
 	}
 
 	protected function validate_min_len($input, $param = null, $message = null)
@@ -141,13 +204,13 @@ class Validator extends Component{
 		if (Utf8Helper::strlen($input['value']) >= (int)$param)
 			return;
 
-		return array(
+		return [
 			'field' => $input['name'],
 			'value' => $input['value'],
 			'rule' => __FUNCTION__,
 			'param' => $param,
 			'error_message' => $message
-		);
+		];
 	}
 
 	protected function validate_email($input, $param = null, $message = null)
@@ -158,13 +221,13 @@ class Validator extends Component{
 
 		$regex = '/^[0-9]{5,25}$/';
 		if (!filter_var($input['value'], FILTER_VALIDATE_EMAIL)) {
-			return array(
+			return [
 				'field' => $input['name'],
 				'value' => $input['value'],
 				'rule' => __FUNCTION__,
 				'param' => $param,
 				'error_message' => $message
-			);
+			];
 		}
 	}
 
@@ -176,13 +239,13 @@ class Validator extends Component{
 
 		$regex = '/^[0-9]{8,11}$/';
 		if (!preg_match($regex, $input['value'])) {
-			return array(
+			return [
 				'field' => $input['name'],
 				'value' => $input['value'],
 				'rule' => __FUNCTION__,
 				'param' => $param,
 				'error_message' => $message
-			);
+			];
 		}
 	}
 
@@ -193,13 +256,13 @@ class Validator extends Component{
 		}
 
 		if (!preg_match('#[-a-zA-Z0-9@:%_\+.~\#?&//=]{2,256}\.[a-z]{2,63}\b(\/[-a-zA-Z0-9@:%_\+.~\#?&//=]*)?#si', $input['value'])) {
-			return array(
+			return [
 				'field' => $input['name'],
 				'value' => $input['value'],
 				'rule' => __FUNCTION__,
 				'param' => $param,
 				'error_message' => $message
-			);
+			];
 		}
 	}
 
@@ -210,13 +273,13 @@ class Validator extends Component{
 		}
 
 		if (!is_numeric(str_replace(',', '', $input['value']))) {
-			return array(
+			return [
 				'field' => $input['name'],
 				'value' => $input['value'],
 				'rule' => __FUNCTION__,
 				'param' => $param,
 				'error_message' => $message
-			);
+			];
 		}
 	}
 }
