@@ -63,7 +63,7 @@ class Url {
 
     public static function hlink($route, $args = '', $secure = false){
     	$args = Payla::app()->url->addToken($args);
-    	echo htmlspecialchars_decode(self::$instance->link($route, $args, $secure));
+    	return htmlspecialchars_decode(self::$instance->link($route, $args, $secure));
     }
 
     public static function slink($route, $args = '', $secure = false){
