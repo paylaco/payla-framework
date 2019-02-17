@@ -13,7 +13,12 @@ class Url {
 	public function init() {
         $modules = Payla::app()->config->get('modules');
         $current_module = Payla::app()->request->module;
-		$domain = Payla::app()->config->get('domain')."/".str_replace("/","",$modules[$current_module]['url']);
+        
+        $module = str_replace("/","",$modules[$current_module]['url']);
+        if($module)
+           $module .= "/";
+
+		$domain = Payla::app()->config->get('domain')."/".$module;
 
         $this->domain = "http://".$domain;
 		$this->ssl = Payla::app()->config->get('config_secure') ? 'https://'.$domain : $this->domain;

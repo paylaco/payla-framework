@@ -22,12 +22,6 @@ class Response {
 		if(!$complete){
 			$url = Payla::app()->request->BaseUrl().$url;
 		}
-
-		if(!strpos($url, 'token') && !empty($this->session->data['token'])){
-			$sep = !strpos($url, '?') ? '?' : '&';
-			$url .= $sep.'token='.$this->session->data['token'];
-		}
-		
 		header('Location: ' . str_replace(['&amp;', "\n", "\r"], ['&', '', ''], $url), true, $status);
 		exit();
 	}
