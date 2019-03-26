@@ -30,6 +30,10 @@ class Url {
         return self::$instance;
 	}
 
+    public function getBaseUrl(){
+        return "http://".Payla::app()->config->get('domain')."/";
+    }
+
     private function addToken($args){
     	$token = isset($_SESSION['token']) ? $_SESSION['token'] : false;
     	if($token){
@@ -73,6 +77,6 @@ class Url {
 
     public static function slink($route, $args = '', $secure = false){
     	$args = Payla::app()->url->addToken($args);
-    	return self::$instance->link($route, $args, $secure);
+    	return htmlspecialchars_decode(self::$instance->link($route, $args, $secure));
     }
 }

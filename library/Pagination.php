@@ -74,20 +74,20 @@ class Pagination {
 		}
 
 		$output .= '</ul>';
-                if($page_limit)
-                {
-                $select='<option value="20">20</option>';
-                $select.='<option value="50">50</option>';
-                $select.='<option value="100">100</option>';
-                $output .='<span style="padding:6px 12px;clear:both"><span>تعداد در صفحه</span><select name="page_limit" id="page_limit">'.$select.'</select></span>';
-                $output .='<script type="text/javascript">';
-                $output .='$(function(){';
-                $output .='$("#page_limit").change(function(){';
-                $output .='location="'. str_replace("&amp;","&",str_replace('{page}',1, $this->url)).'&limit="+$(this).val();';
-                $output .='});';
-                $output .='});';
-                $output .='</script>';
-                }
+        if($page_limit){
+	        $select='<option value="20">20</option>';
+	        $select.='<option value="50">50</option>';
+	        $select.='<option value="100">100</option>';
+	        $output .='<span style="padding:6px 12px;clear:both"><span>تعداد در صفحه</span><select name="page_limit" id="page_limit">'.$select.'</select></span>';
+	        $output .='<script type="text/javascript">';
+	        $output .='$(function(){';
+	        $output .='$("#page_limit").change(function(){';
+	        $output .='location="'. str_replace("&amp;","&",str_replace('{page}',1, $this->url)).'&limit="+$(this).val();';
+	        $output .='});';
+	        $output .='});';
+	        $output .='</script>';
+        }
+        
 		if ($num_pages > 1) {
 			return $output;
 		} else {
