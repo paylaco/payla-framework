@@ -55,6 +55,8 @@ class Controller extends Component {
 		$data['styles'] = $this->document->getStyles();
 		$data['scripts'] = $this->document->getScripts();
 		$data['rawScripts'] = $this->document->getScripts('raw');
+		$data['bottom_scripts'] = $this->document->getScripts(false, 'bottom');
+		$data['bottom_rawScripts'] = $this->document->getScripts('raw', 'bottom');
 		$data['lang'] = $this->config->get('lang');
 		$data['direction'] = $this->config->get('direction');
 		$data['base'] = $this->config->get('domain');

@@ -219,8 +219,8 @@ class Validator extends Component{
 			return;
 		}
 
-		$regex = '/^[0-9]{5,25}$/';
-		if (!filter_var($input['value'], FILTER_VALIDATE_EMAIL)) {
+		$regex = '/^[^\@]+@.*\.[a-z]{2,6}$/i';
+		if (!preg_match($regex, $input['value'])) {
 			return [
 				'field' => $input['name'],
 				'value' => $input['value'],

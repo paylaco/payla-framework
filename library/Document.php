@@ -9,7 +9,6 @@ class Document {
 	private $links = [];
 	private $styles = [];
 	private $scripts = [];
-	private $rawScripts = [];
 
 	public function init(){}
 
@@ -52,17 +51,22 @@ class Document {
 		return $this->styles;
 	}
 
-	public function addScript($script, $raw = false) {
+	public function addScript($script, $raw = false, $pos = 'top') {
 		if($raw)
-			$this->rawScripts[md5($script)] = $script;
+			$this->scripts['raw'][$pos][md5($script)] = $script;
 		else
-			$this->scripts[md5($script)] = $script;
+			$this->scripts['file'][$pos][md5($script)] = $script;
 	}
 
-	public function getScripts($raw = false) {
-		if($raw)
-			return $this->rawScripts;
-		else
-			return $this->scripts;
+	public function getScripts($raw = false, $pos = 'top') {
+		if($raw){
+			if(isset($this->scripts['raw'][$pos]))
+				return $this->scripts['raw'][$pos];
+		}else{
+			if(isset($this->scripts['file'][$pos]))
+				return $this->scripts['file'][$pos];
+		}
+
+		return [];
 	}
 }
